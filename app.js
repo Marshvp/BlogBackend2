@@ -3,6 +3,7 @@ require('dotenv').config()
 const bodyparser = require("body-parser")
 const cors = require("cors")
 const indexRouter = require("./routes/index.js")
+const blogRouter = require("./routes/blogRoutes.js")
 const logger = require("./middleware/logger.js")
 const { default: errorHandler } = require("./middleware/errorHandler.js")
 console.log("Hello");
@@ -18,6 +19,7 @@ app.use(logger)
 app.use(errorHandler)
 
 app.use("/api", indexRouter);
+app.use("/api/blogs", blogRouter);
 
 
 
