@@ -38,18 +38,34 @@ exports.createBlogs = async (req, res) => {
 
 }
 
-// exports.getBlogById = async (req, res) => {
-// 	const id = req.params;
-//
-//
-// 	try {
-// 		const blogs = await primsa.blogs.findUnique({
-// 			where: { Number(id) },
-// 		});
-//
-//
-// 	} catch (error) {
-// 		console.error(error)
-// 		res.status(500).json({ message: "no blog on that id" })
-// 	}
-// }
+exports.getBlogById = async (req, res) => {
+	const id = req.params;
+
+
+	try {
+		const blogs = await primsa.blogs.findUnique({
+			where: { id: Number(id) },
+		});
+
+		res.status(400).json({ message: `Found Blog with Id: ${id}. ${blogs.content}` })
+
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: "no blog on that id" })
+	}
+}
+
+
+exports.deleteBlog = async (req, res) => {
+	const id = req.params;
+
+	try {
+		const blogs = await prisma.blogs.delete({
+			where: { id: Number(id) },
+		})
+		res.status(400).json({ message: "Blog Deleted" })
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: "Unable to delete Blog" });
+	}
+};
