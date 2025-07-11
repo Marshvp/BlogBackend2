@@ -24,11 +24,11 @@ exports.createBlogs = async (req, res) => {
 		return res.status(400).json({ errors: result.error.errors })
 	}
 
-	const { title, content } = result.data;
+	const { title, description } = result.data;
 
 
 	const blog = await prisma.blogs.create({
-		data: { title, content },
+		data: { title, description },
 	});
 
 
