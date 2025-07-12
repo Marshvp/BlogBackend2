@@ -1,10 +1,10 @@
-const { Stategy: JWTStrategy, ExtractJwt } = require("passport-jwt");
+const { Strategy: JWTStrategy, ExtractJwt } = require("passport-jwt");
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const passport = require('passport');
 
 
-const opt = {
+const opts = {
 	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 	secretOrKey: process.env.JWT_Secret,
 };
@@ -12,7 +12,7 @@ const opt = {
 passport.use(
 	new JWTStrategy(opts, async (jwt_payload, done) => {
 		try {
-			const user = await primsa.users.findUnique({
+			const user = await prisma.users.findUnique({
 				where: { id: Number(id) }
 			});
 
