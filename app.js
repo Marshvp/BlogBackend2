@@ -28,6 +28,6 @@ app.use("/api/auth", authRouter);
 
 
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
 	console.log(`Listening on ${PORT}`)
 })
