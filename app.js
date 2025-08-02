@@ -8,6 +8,7 @@ const logger = require("./middleware/logger.js")
 const { default: errorHandler } = require("./middleware/errorHandler.js")
 const passport = require("./middleware/passport.js")
 const authRouter = require("./routes/authRoutes.js")
+const uploadRouter = require("./routes/uploadRouter.js")
 console.log("Hello");
 
 const app = express()
@@ -24,6 +25,7 @@ app.use(passport.initialize())
 app.use("/api", indexRouter);
 app.use("/api/blogs", blogRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/upload", uploadRouter)
 
 
 
