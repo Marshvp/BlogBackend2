@@ -1,8 +1,9 @@
 const { Router } = require("express");
-// const authController
+const jwt = require("jsonwebtoken")
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt")
+
 
 const JWT_Secret = process.env.JWT_Secret;
 const authRouter = Router();
@@ -10,6 +11,7 @@ const authRouter = Router();
 authRouter.post('/signup', async (req, res) => {
 	const { username, email, password } = req.body;
 
+	const userName = username
 
 	const existing = await prisma.users.findUnique({
 		where: { email }
@@ -20,7 +22,7 @@ authRouter.post('/signup', async (req, res) => {
 
 	const user = await prisma.users.create({
 		data: {
-			username,
+			userName,
 			email,
 			password: hashedPassword
 		},
