@@ -31,15 +31,16 @@ exports.getAllBlogs = async (req, res) => {
 
 
 exports.getBlogById = async (req, res) => {
-	const id = req.params;
+	const { id } = req.params;
+	console.log("By Id Hit");
 
 
 	try {
-		const blogs = await primsa.blogs.findUnique({
+		const blogs = await prisma.blogs.findUnique({
 			where: { id: Number(id) },
 		});
 
-		res.status(400).json({ message: `Found Blog with Id: ${id}. ${blogs.content}` })
+		res.json(blogs)
 
 	} catch (error) {
 		console.error(error)
