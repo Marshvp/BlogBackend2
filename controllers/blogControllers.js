@@ -4,9 +4,21 @@ const { blogSchema } = require('../schemas/blogSchemas')
 
 
 exports.getAllBlogs = async (req, res) => {
+	console.log("Get all hit")
 	try {
 		const blogs = await prisma.blogs.findMany({
-			orderBy: { createdAt: 'desc' },
+			select: {
+				id: true,
+				title: true,
+				description: true,
+				filePath: true,
+				author: {
+					select: {
+						userName: true,
+					}
+				},
+			},
+			orderBy: { createdAt: "desc" },
 		})
 
 		res.json(blogs)
@@ -17,26 +29,6 @@ exports.getAllBlogs = async (req, res) => {
 	}
 };
 
-exports.createBlogs = async (req, res) => {
-	const result = blogSchema.safeParse(req.body);
-
-	if (!result.success) {
-		return res.status(400).json({ errors: result.error.errors })
-	}
-
-	const { title, description } = result.data;
-
-
-	const blog = await prisma.blogs.create({
-		data: { title, description },
-	});
-
-
-	res.status(400).json({ message: "Blog created sucessfully", blog: blog });
-
-
-
-}
 
 exports.getBlogById = async (req, res) => {
 	const id = req.params;

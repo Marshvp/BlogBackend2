@@ -27,7 +27,8 @@ app.use("/api/blogs", blogRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/upload", uploadRouter)
 
-
+//file uploads directory
+app.use('/uploads', express.static('uploads'));
 
 
 app.listen(PORT, () => {
