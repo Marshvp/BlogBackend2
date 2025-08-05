@@ -25,6 +25,7 @@ uploadRouter.post('/', passport.authenticate('jwt', { session: false }), upload.
 					description,
 					filePath,
 					authorId: req.user.id,
+					isPublished: false
 				}
 			})
 

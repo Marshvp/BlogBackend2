@@ -11,12 +11,10 @@ const authRouter = Router();
 authRouter.post('/signup', async (req, res) => {
 	const { username, email, password } = req.body;
 	const { isAdmin } = req.body;
+	console.log(isAdmin)
 
 	const userName = username;
-	let createAdmin = false;
-	if (isAdmin === "true") {
-		createAdmin = true;
-	}
+	const createAdmin = Boolean(isAdmin) === true;
 	const existing = await prisma.users.findUnique({
 		where: { email }
 	})
