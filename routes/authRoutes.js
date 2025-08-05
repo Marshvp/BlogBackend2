@@ -10,9 +10,13 @@ const authRouter = Router();
 
 authRouter.post('/signup', async (req, res) => {
 	const { username, email, password } = req.body;
+	const { isAdmin } = req.body;
 
-	const userName = username
-
+	const userName = username;
+	let createAdmin = false;
+	if (isAdmin === "true") {
+		createAdmin = true;
+	}
 	const existing = await prisma.users.findUnique({
 		where: { email }
 	})
@@ -24,10 +28,23 @@ authRouter.post('/signup', async (req, res) => {
 		data: {
 			userName,
 			email,
-			password: hashedPassword
+			password: hashedPassword,
+			isAdmin: createAdmin,
 		},
 	});
-	res.status(201).json({ message: "Account created" })
+
+	const token = jwt.sign(
+		{
+			id: user.id,
+			email: user.email,
+			isAdmin: user.isAdmin
+		}, JWT_Secret,
+		{
+			expiresIn: '1d'
+		}
+	)
+	res.status(201).json({ message: "Account created", token, user: { id: user.id, userName: user.userName, email: user.email, isAdmin: user.isAdmin } })
+
 })
 
 
@@ -53,7 +70,7 @@ authRouter.post('/login', async (req, res) => {
 				expiresIn: '1d'
 			}
 		)
-		res.json({ token })
+		res.json({ token, user: { id: user.id, userName: user.userName, email: user.email, isAdmin: user.isAdmin } })
 	} catch (error) {
 		console.error(error)
 	}
