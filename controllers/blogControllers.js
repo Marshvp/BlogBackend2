@@ -38,8 +38,16 @@ exports.getBlogById = async (req, res) => {
 	try {
 		const blogs = await prisma.blogs.findUnique({
 			where: { id: Number(id) },
+			include: {
+				author: {
+					select: {
+						userName: true,
+					}
+				}
+			}
 		});
 
+		console.log(blogs)
 		res.json(blogs)
 
 	} catch (error) {
@@ -62,3 +70,5 @@ exports.deleteBlog = async (req, res) => {
 		res.status(500).json({ message: "Unable to delete Blog" });
 	}
 };
+
+
